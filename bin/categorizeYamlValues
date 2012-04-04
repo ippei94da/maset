@@ -1,0 +1,21 @@
+#! /usr/bin/ruby
+
+#USAGE: categorizeYamlValues.rb yaml_file
+#siteNames.rb などでサイト名を配列で表現した YAML から、
+#同じものをカテゴライズするのに使える。
+
+require "yaml"
+require "rubygems"
+gem "maset"
+require "maset/categorize.rb"
+
+cell_and_conf = YAML.load( ARGF ).to_a
+
+cell_and_conf.extend( Categorize )
+categories = cell_and_conf.categorize{ |a, b| a[1] == b[1] } 
+categories.each do |category|
+	puts category[0][1].join(",")
+	category.each do |i|
+		puts "  " + i[0]
+	end
+end
